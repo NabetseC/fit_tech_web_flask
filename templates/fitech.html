@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/vision_bundle.js" crossorigin="anonymous"></script>
+    <title>Document</title>
+    
+</head>
+<body>
+
+    <button>Click me</button>
+    <div class="header">
+        FitTech
+    </div>
+    <div class="lessons">
+        <p>Lesson</p>
+        <div class="dropdown">
+            <button class="change">Change Lesson</button>
+            <div class="dropdown-list">
+                <div class="thingy"> 
+                <button>Rest</button>
+                <button>Jab</button>
+                <button>Uppercut</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h4>{{pred}}</h4>
+    <div id="container">
+        <video autoplay="true" id="videoElement"  class="vids" >
+
+        </video>
+        <video class="vids" controls>
+            <source src="{{ url_for('static', filename='b.mp4') }}" type="video/mp4">
+        </video>
+    </div>
+
+    <canvas width= "640" height="480" style="border: 1px solid #000; width: 49vw; height: calc(48vw*.75);" id ="myCanvas"></canvas>
+    <button onclick= toggleCam() >Toggle Camera</button>
+    <button onclick= predict()>Predict</button>
+
+    <script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>
+    <script src="{{ url_for('static', filename='js/ind.js') }}"></script> 
+
+</body>
+</html>

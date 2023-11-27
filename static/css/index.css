@@ -1,0 +1,94 @@
+body{
+    margin: 0;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
+}
+.header{
+    background-color: rgb(255, 217, 1);
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    font-size: 6vw;
+}
+
+.lessons{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+.lessons p{
+    font-weight: 800;
+    font-size: 2vw;
+    position: absolute;
+    left: 0;
+}
+
+.dropdown{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+.dropdown-list{
+    display: none;
+    width: 30vw;
+
+}
+.change{
+    font-size: 2vw !important;
+    color: brown;
+    cursor: pointer;
+    padding: 5px 0;
+
+}
+
+.change:hover + .dropdown-list{
+   display: block;
+}
+
+.dropdown-list:hover{
+   display: block;
+}
+
+.dropdown-list button{
+   width: 10vw;
+   padding: 10px 0;
+   font-size: 1.5vw;
+   border-radius: 0;
+   background-color: tomato;
+   color: white;
+   font-weight: 700;
+   border-width: 0;
+}
+
+
+.thingy{
+    position: absolute;
+
+}
+
+.thingy:hover{
+    display: block;
+}
+
+.dropdown-list button:hover{
+   background-color: rgb(226, 86, 62);
+    
+}
+
+#videoElement{
+    margin-top: 70px;
+}
+
+.vids{
+    width: 49vw;
+
+}
+
+.container{
+    display: flex;
+    flex-direction: row;
+}
