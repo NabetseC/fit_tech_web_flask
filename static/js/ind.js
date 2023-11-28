@@ -30,17 +30,19 @@ video.addEventListener('play',  function () {
             //const dataURI = myCanvas.toDataURL();
             //img = dataURI;
             
+            ctx.drawImage($this, 0, 0);
             const imageData = c.toDataURL('image/png');
 
             frames.push(imageData)
             if (frames.length === 40){
-            if (requests < 10){
+            if (requests < 5){
                 predict(frames)
+                
                 requests+=1
+                frames=[]
             }
-
+            
         }
-            ctx.drawImage($this, 0, 0);
             setTimeout(loop, 1000 / 30); // drawing at 30fps
         }
     })();
@@ -99,11 +101,21 @@ function predict(imgs){
         body: JSON.stringify({ images: imgs }),
       })
         .then(response => {
-          console.log(response)
+            if (response.ok) {
+                return response.text(); // Extract the response as text
+              } else {
+                throw new Error('Something went wrong');
+              }
         })
-        .catch(error => {
-          console.error('Error sending the images:', error);
-        });
+        .then(textData => {
+            // Use the returned text data in your JavaScript code
+            console.log('Text from server:', textData);
+            // Further processing or displaying the text as needed
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            // Handle errors here if needed
+          });
 }
 //working^^
 
