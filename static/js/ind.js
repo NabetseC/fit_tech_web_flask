@@ -9,6 +9,8 @@ var ctx = c.getContext("2d");
 let video = document.querySelector("#videoElement");
 var vidT = "false";
 
+var display = document.getElementById("predictionDisplay")
+
 height = 0
 frames = []
 requests= 0 
@@ -34,8 +36,15 @@ video.addEventListener('play',  function () {
             const imageData = c.toDataURL('image/png');
 
             frames.push(imageData)
+            if (frames.length < 10){
+                display.style.color="red"
+            }
+            else{
+                display.style.color="blue"
+            }
             if (frames.length === 40){
-            if (requests < 5){
+                
+            if (requests < 10){
                 predict(frames)
                 
                 requests+=1
@@ -110,10 +119,12 @@ function predict(imgs){
         .then(textData => {
             // Use the returned text data in your JavaScript code
             console.log('Text from server:', textData);
+            display.innerHTML=textData
             // Further processing or displaying the text as needed
           })
           .catch(error => {
             console.error('Error:', error);
+            display.innerHTML=error
             // Handle errors here if needed
           });
 }

@@ -1,10 +1,18 @@
 from flask import Flask, render_template, url_for, request
+import tensorflow as tf
 from tensorflow import keras 
 import numpy as np
 import os
 import mediapipe as mp
 import base64
 import cv2
+
+interpreter = tf.lite.Interpreter(model_path='converted_model.tflite')
+interpreter.allocate_tensors()
+
+# Get input and output details
+input_details = interpreter.get_input_details()
+output_details = interpreter.get_output_details()
 
 model= keras.saving.load_model('lstm.h5')
 mp_pose = mp.solutions.pose
@@ -102,29 +110,56 @@ def predict():
         
     ArrayOfAngles = np.array(ArrayOfAngles)
     ArrayOfAngles.resize(1,40,8)
+    print(ArrayOfAngles)
     pred_y=np.array(model.predict(ArrayOfAngles))
     idx = pred_y[0].argmax(axis = 0)
+
+    if idx == 0:
+        norm = 'good jab'
+    elif idx == 1:
+        norm = 'bad jab - knee lvl lack'
+    elif idx == 2:
+        norm =  'bad jab - rotation lack'
+    elif idx == 3:
+        norm =  'good rest'
+    elif idx == 4:
+        norm =  'bad rest'
+    elif idx == 5:
+        norm =  'good upper cut'
+    elif idx == 6:
+        norm =  'bad upper cut - knee lvl lack'
+    elif idx == 7:
+        norm =  'bad upper cut - rotation lack'
+    elif idx == 8:
+        norm =  'good straight'
+
+    ArrayOfAngles = ArrayOfAngles.astype(np.float32)
+    print(ArrayOfAngles)
+    interpreter.set_tensor(input_details[0]['index'], ArrayOfAngles)
+    interpreter.invoke()
+    output_data = interpreter.get_tensor(output_details[0]['index'])
+    idx = output_data[0].argmax(axis = 0)
     
     if idx == 0:
-        return 'good jab'
+        lite = 'good jab'
     elif idx == 1:
-        return 'bad jab - knee lvl lack'
+        lite = 'bad jab - knee lvl lack'
     elif idx == 2:
-        return 'bad jab - rotation lack'
+        lite =  'bad jab - rotation lack'
     elif idx == 3:
-        return 'good rest'
+        lite =  'good rest'
     elif idx == 4:
-        return 'bad rest'
+        lite =  'bad rest'
     elif idx == 5:
-        return 'good upper cut'
+        lite =  'good upper cut'
     elif idx == 6:
-        return 'bad upper cut - knee lvl lack'
+        lite =  'bad upper cut - knee lvl lack'
     elif idx == 7:
-        return 'bad upper cut - rotation lack'
+        lite =  'bad upper cut - rotation lack'
     elif idx == 8:
-        return 'good straight'
-
-    return("didn't find match")
+        lite =  'good straight'
+    
+    return("lite: "+ lite+ "                         "+"norm: "+ norm)
     
 
 
